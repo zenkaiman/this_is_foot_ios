@@ -57,7 +57,7 @@
         <!--Meal Detail Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MealDetailController" customModule="FoodManagement2027" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MealDetailController" id="BYZ-38-t0r" customClass="MealDetailController" customModule="FoodManagement2027" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -101,7 +101,11 @@
                                                 <action selector="cancel:" destination="BYZ-38-t0r" id="PGa-CP-iOw"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="adC-aH-Dds"/>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="adC-aH-Dds">
+                                            <connections>
+                                                <action selector="save:" destination="BYZ-38-t0r" id="cEE-qj-3sx"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -125,7 +129,9 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="Imager" destination="TYh-wu-9Xa" id="C49-rw-kDu"/>
                         <outlet property="edtMealName" destination="OXe-Gu-EFx" id="fmW-oo-QOQ"/>
+                        <outlet property="mealRating" destination="hc2-R3-O7z" id="ZP4-Lh-lWe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
