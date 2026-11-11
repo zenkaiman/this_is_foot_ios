@@ -51,6 +51,22 @@ class MealListController: UIViewController {
         // Chuyen chuc nang cho tableView
         tableView.setEditing(editing, animated: animated)
     }
+    
+    // Xu ly truoc khi chuyen man hinh
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Xu ly callBack tu man hinh B
+        if let detailController = segue.destination as? MealDetailController {
+            detailController.getBackData = { (meal:Meal) in
+                // Cap nhat vao TableView
+                // 3.1 Tim vi tri de chen mon an moi trong TableView
+                let newIndexPath = IndexPath(row: self.mealList.count, section: 0)
+                // 3.2 Dua mon an moi vao mealList
+                self.mealList.append(meal)
+                // 3.3 Cap nhat len tableView
+                self.tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
+        }
+    }
 }
 
 // MARK: - Cac ham uy quyen cua Table View (UITableViewDelegate, UITableViewDataSource)
@@ -83,8 +99,19 @@ extension MealListController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    //MARK: Quay ve tu man hinh DetiController
-    @IBAction func unWindFromDetailController(segue: UIStoryboardSegue){
-        print("Quay ve tu DetailController")
+    // MARK: Quay ve tu man hinh DetailController
+    @IBAction func unWindFromDetailController(segue: UIStoryboardSegue) {
+        //print("Quay ve tu DetailController")
+        // 3. Cap nhat mon an tu man hinh meal detail ve
+        // Lay toan bo man hinh mealdetail va lay gia tri meal vua tao
+        if let mealDetailController = segue.source as? MealDetailController, let meal = mealDetailController.meal {
+            // Cap nhat vao TableView
+            // 3.1 Tim vi tri de chen mon an moi trong TableView
+            let newIndexPath = IndexPath(row: mealList.count, section: 0)
+            // 3.2 Dua mon an moi vao mealList
+            mealList.append(meal)
+            // 3.3 Cap nhat len tableView
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        }
     }
 }

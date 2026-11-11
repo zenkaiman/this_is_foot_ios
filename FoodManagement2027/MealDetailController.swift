@@ -12,11 +12,27 @@ class MealDetailController: UIViewController, UITextFieldDelegate {
     //MARK: Properties
     @IBOutlet weak var Imager: UIImageView!
     @IBOutlet weak var edtMealName: UITextField!
+    @IBOutlet weak var mealRating: UIRating!
+    //bien dung de truyen tham so meal giua man hinh a va b
+    var meal:Meal?
+    
+    // Dinh nghia callBack quay ve man hinh A
+    var getBackData:((Meal)->Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //B3. Thuc hien ham uy quyen cho doi tuong TextField
         edtMealName.delegate = self
+        
+        //Neu man hinh truoc co truyen meal sang thi hien thi mon an do len giao dien
+        if let meal = meal {
+            edtMealName.text = meal.nameMeal
+            mealRating.rating = meal.rating
+            //Mon an khong co anh thi giu nguyen anh mac dinh
+            if let image = meal.image {
+                Imager.image = image
+            }
+        }
     }
 
     //MARK: Dinh nghia cac ham uy quyen cho doi tuong TextField
@@ -57,6 +73,35 @@ class MealDetailController: UIViewController, UITextFieldDelegate {
     //MARK: Navigation
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+    
+    //Ham duoc goi truoc khi chuyen man hinh => chuan bi du lieu can truyen di
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        //Chi tao mon an khi quay ve man hinh danh sach (nhan Save), bo qua cac segue khac (vd: Go To Map)
+        guard segue.destination is MealListController else {
+            return
+        }
+        
+        // 1.tao mon an tu thong tin nguoi dung nhap vao
+        let name = edtMealName.text ?? ""
+        let meal = Meal(nameMeal: name, image: Imager.image, rating: mealRating.rating)
+        //2. dua  doi tuong vua tao vao bien thanh phan de truyen di
+        self.meal = meal
+    }
+    
+    // Tao moi mon an va quay ve A
+    @IBAction func save(_ sender: UIBarButtonItem) {
+        // 1. Tao mon an tu thong tin nguoi dung nhap vao
+        let name = edtMealName.text ?? ""
+        if let meal = Meal(nameMeal: name, image: Imager.image, rating: mealRating.rating) {
+            // Goi callBack de truyen du lieu nguoc ve A
+            getBackData?(meal)
+        }
+        
+        // An man hinh hien tai
         dismiss(animated: true)
     }
 }
