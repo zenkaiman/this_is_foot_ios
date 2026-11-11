@@ -99,6 +99,37 @@ extension MealListController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // Xu ly chuyen man hinh khi edit mon an
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //print("Ban vua chon mon an thu: \(indexPath.row)")
+        // Bo chon moi khi select row
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // 1. Lay meal tai vi tri chon
+        let meal = mealList[indexPath.row]
+        
+        // Tao man hinh Detail tu storyboard (Storyboard ID: MealDetailController)
+        if let detailController = storyboard?.instantiateViewController(withIdentifier: "MealDetailController") as? MealDetailController {
+            // 2. Truyen meal sang man hinh Detail
+            // (Buoc 4 - cap nhat meal len giao dien - nam trong viewDidLoad cua MealDetailController)
+            detailController.meal = meal
+            
+            // Xu ly callBack tu man hinh Detail
+            // (Buoc 5 - truyen lai meal da duoc sua ve - nam trong ham save cua MealDetailController)
+            detailController.getBackData = { (newMeal:Meal) in
+                // 6. Cap nhat meal moi cho man hinh list
+                // 6.1 Thay meal cu bang meal da duoc sua trong mealList
+                self.mealList[indexPath.row] = newMeal
+                // 6.2 Cap nhat lai dong do len tableView
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+            
+            // 3. Chuyen man hinh sang Detail
+            detailController.modalPresentationStyle = .fullScreen
+            present(detailController, animated: true)
+        }
+    }
+    
     // MARK: Quay ve tu man hinh DetailController
     @IBAction func unWindFromDetailController(segue: UIStoryboardSegue) {
         //print("Quay ve tu DetailController")

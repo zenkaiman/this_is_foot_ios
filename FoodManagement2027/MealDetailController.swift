@@ -24,7 +24,7 @@ class MealDetailController: UIViewController, UITextFieldDelegate {
         //B3. Thuc hien ham uy quyen cho doi tuong TextField
         edtMealName.delegate = self
         
-        //Neu man hinh truoc co truyen meal sang thi hien thi mon an do len giao dien
+        // (Buoc 4 khi sua mon an) Cap nhat meal len giao dien neu man hinh list co truyen meal sang
         if let meal = meal {
             edtMealName.text = meal.nameMeal
             mealRating.rating = meal.rating
@@ -92,12 +92,13 @@ class MealDetailController: UIViewController, UITextFieldDelegate {
         self.meal = meal
     }
     
-    // Tao moi mon an va quay ve A
+    // Tao moi (hoac sua) mon an va quay ve A
     @IBAction func save(_ sender: UIBarButtonItem) {
         // 1. Tao mon an tu thong tin nguoi dung nhap vao
         let name = edtMealName.text ?? ""
         if let meal = Meal(nameMeal: name, image: Imager.image, rating: mealRating.rating) {
             // Goi callBack de truyen du lieu nguoc ve A
+            // (Buoc 5 khi sua mon an) Truyen lai meal da duoc sua ve man hinh list
             getBackData?(meal)
         }
         
